@@ -74,7 +74,7 @@
 <div class="toast" id="toast" role="status"></div>
 <button class="support-fab" id="supportOpen">🤖 67 SUPPORT</button>
 <section class="support-panel" id="supportPanel" aria-label="67 Support chat">
- <header class="support-top"><div><strong>67 SUPPORT AI</strong><small>Заместитель директора по бесполезности</small></div><button class="support-close" id="supportClose" aria-label="Close">×</button></header>
+ <header class="support-top"><div><strong>67 SUPPORT AI</strong><small>Заместитель директора по бесполезности</small></div><div style="display:flex;gap:8px;align-items:center"><button class="support-close" id="supportSetup" aria-label="Настроить сервер" title="Настроить сервер" style="font-size:16px">⚙</button><button class="support-close" id="supportClose" aria-label="Close">×</button></div></header>
  <div class="support-log" id="supportLog"><div class="support-msg bot">Здарова. Я заместитель 67. Задавай вопрос, но учти: мой диплом напечатан на сыре.</div></div>
  <div class="support-compose"><input id="supportInput" maxlength="500" placeholder="Напиши что-нибудь..." autocomplete="off"><button class="btn primary" id="supportSend">➤</button></div>
  <div class="support-note">Бесплатная AI-модель с дневными лимитами. Не отправляй личные данные.</div>
@@ -180,11 +180,12 @@ if(end){$('timerAction').textContent='Сбросить таймер';$('timerCap
 update();tick();setInterval(tick,250);
 
 /* 67 Support AI — the API key stays on the server, never in this page. */
-const SUPPORT_WORKER_URL=localStorage.getItem('six7_support_worker')||'';
+let SUPPORT_WORKER_URL=localStorage.getItem('six7_support_worker')||'';
 const supportPanel=$('supportPanel'),supportLog=$('supportLog'),supportInput=$('supportInput');
 let supportHistory=[];
 $('supportOpen').addEventListener('click',()=>{supportPanel.classList.toggle('open');supportInput.focus()});
 $('supportClose').addEventListener('click',()=>supportPanel.classList.remove('open'));
+$('supportSetup').addEventListener('click',()=>{const value=prompt('Вставь адрес своего Cloudflare Worker (оканчивается на workers.dev). Сам API-ключ сюда НЕ вставляй.');if(value===null)return;SUPPORT_WORKER_URL=value.trim();while(SUPPORT_WORKER_URL.endsWith('/'))SUPPORT_WORKER_URL=SUPPORT_WORKER_URL.slice(0,-1);localStorage.setItem('six7_support_worker',SUPPORT_WORKER_URL);supportBubble(SUPPORT_WORKER_URL?'Сервер записан. Проверим его при следующем сообщении.':'Адрес сервера очищен.','bot')});
 function supportBubble(text,who){const el=document.createElement('div');el.className='support-msg '+who;el.textContent=text;supportLog.append(el);supportLog.scrollTop=supportLog.scrollHeight;return el}
 async function sendSupport(){
  const message=supportInput.value.trim();if(!message)return;

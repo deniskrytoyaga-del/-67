@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://deniskrytoyaga-del.github.io/-67/sitemap.xml

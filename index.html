@@ -249,28 +249,73 @@ if(end){$('timerAction').textContent='Сбросить таймер';$('timerCap
 update();tick();setInterval(tick,250);
 
 /* 67 Support AI — the API key stays on the server, never in this page. */
-const DEFAULT_SUPPORT_WORKER_URL='https://shy-salad-d33d.deniskrytoyaga.workers.dev';\nlet SUPPORT_WORKER_URL=DEFAULT_SUPPORT_WORKER_URL;\n// Always start with the known 67 server; an old custom address in localStorage can break chat.
-const supportPanel=$('supportPanel'),supportLog=$('supportLog'),supportInput=$('supportInput');
-let supportHistory=[];
-$('supportOpen').addEventListener('click',()=>{supportPanel.classList.toggle('open');supportInput.focus()});
-$('supportClose').addEventListener('click',()=>supportPanel.classList.remove('open'));
-$('supportSetup').addEventListener('click',()=>{const value=prompt('Адрес сервера 67. Для возврата к стандартному серверу оставь поле пустым. API-ключ сюда НЕ вставляй.',SUPPORT_WORKER_URL);if(value===null)return;const clean=value.trim().replace(/\\/$/,'');if(clean&&!/^https:\\/\\/[a-z0-9.-]+\\.workers\\.dev$/i.test(clean)){supportBubble('Нужен полный адрес Cloudflare Worker вида https://имя.workers.dev','bot');return}SUPPORT_WORKER_URL=clean||DEFAULT_SUPPORT_WORKER_URL;localStorage.setItem('six7_support_worker',SUPPORT_WORKER_URL);ACCOUNT_API_URL=SUPPORT_WORKER_URL;supportBubble('Адрес сервера 67 установлен: '+SUPPORT_WORKER_URL,'bot')});
-function supportBubble(text,who){const el=document.createElement('div');el.className='support-msg '+who;el.textContent=text;supportLog.append(el);supportLog.scrollTop=supportLog.scrollHeight;return el}
-async function sendSupport(){
- const message=supportInput.value.trim();if(!message)return;
- supportInput.value='';supportBubble(message,'user');supportHistory.push({role:'user',content:message});
- if(!SUPPORT_WORKER_URL){supportBubble('Сервер 67 ещё не подключён. API-ключ нельзя хранить прямо на сайте — сначала нужно развернуть бесплатный Worker и добавить секрет. Пока я официально занят.', 'bot');return}
- const waiting=supportBubble('67 думает… (это может занять пару секунд)','bot');
- $('supportSend').disabled=true;
- try{
-  const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),25000);
-  let res,data;try{res=await fetch(SUPPORT_WORKER_URL.replace(/\/$/,'')+'/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:supportHistory.slice(-12)}),signal:controller.signal});data=await res.json().catch(()=>({error:'Сервер вернул не JSON-ответ.'}));}finally{clearTimeout(timeout)}
-  if(!res.ok)throw new Error(data.error||'Ошибка сервера '+res.status);
-  waiting.textContent=data.reply||'67';supportHistory.push({role:'assistant',content:waiting.textContent});
- }catch(e){const reason=e.name==='AbortError'?'Сервер долго отвечает — попробуй ещё раз через минуту.':e.message;waiting.textContent='Поддержка 67 временно недоступна. '+reason+' (сервер: '+SUPPORT_WORKER_URL+')';supportHistory.pop()}
- finally{$('supportSend').disabled=false;supportInput.focus()}
+const DEFAULT_SUPPORT_WORKER_URL = 'https://shy-salad-d33d.deniskrytoyaga.workers.dev';
+let SUPPORT_WORKER_URL = DEFAULT_SUPPORT_WORKER_URL;
+const supportPanel = $('supportPanel');
+const supportLog = $('supportLog');
+const supportInput = $('supportInput');
+let supportHistory = [];
+
+$('supportOpen').addEventListener('click', () => {
+  supportPanel.classList.toggle('open');
+  if (supportPanel.classList.contains('open')) supportInput.focus();
+});
+$('supportClose').addEventListener('click', () => supportPanel.classList.remove('open'));
+$('supportSetup').addEventListener('click', () => {
+  const value = prompt('Адрес сервера 67. Оставь поле пустым, чтобы вернуть стандартный сервер.', SUPPORT_WORKER_URL);
+  if (value === null) return;
+  let clean = value.trim();
+  while (clean.endsWith('/')) clean = clean.slice(0, -1);
+  if (clean && (!clean.startsWith('https://') || !clean.includes('.workers.dev'))) {
+    supportBubble('Нужен адрес Cloudflare Worker вида https://имя.workers.dev', 'bot');
+    return;
+  }
+  SUPPORT_WORKER_URL = clean || DEFAULT_SUPPORT_WORKER_URL;
+  localStorage.setItem('six7_support_worker', SUPPORT_WORKER_URL);
+  ACCOUNT_API_URL = SUPPORT_WORKER_URL;
+  supportBubble('Адрес сервера 67 установлен.', 'bot');
+});
+function supportBubble(text, who) {
+  const el = document.createElement('div');
+  el.className = 'support-msg ' + who;
+  el.textContent = text;
+  supportLog.append(el);
+  supportLog.scrollTop = supportLog.scrollHeight;
+  return el;
 }
-$('supportSend').addEventListener('click',sendSupport);
+async function sendSupport() {
+  const message = supportInput.value.trim();
+  if (!message) return;
+  supportInput.value = '';
+  supportBubble(message, 'user');
+  supportHistory.push({role:'user', content:message});
+  const waiting = supportBubble('67 думает…', 'bot');
+  $('supportSend').disabled = true;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 25000);
+  try {
+    const res = await fetch(SUPPORT_WORKER_URL + '/chat', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({messages:supportHistory.slice(-12)}),
+      signal:controller.signal
+    });
+    const data = await res.json().catch(() => ({error:'Сервер вернул некорректный ответ.'}));
+    if (!res.ok) throw new Error(data.error || 'Ошибка сервера ' + res.status);
+    waiting.textContent = data.reply || '67';
+    supportHistory.push({role:'assistant', content:waiting.textContent});
+  } catch (e) {
+    waiting.textContent = e.name === 'AbortError'
+      ? 'Поддержка 67 не дождалась ответа сервера. Попробуй ещё раз.'
+      : 'Поддержка 67 временно недоступна: ' + e.message;
+    supportHistory.pop();
+  } finally {
+    clearTimeout(timeout);
+    $('supportSend').disabled = false;
+    supportInput.focus();
+  }
+}
+$('supportSend').addEventListener('click', sendSupport);
 
 /* 67 account authentication and cloud save */
 function accountStatus(message,error=false){const el=$('accountStatus');el.textContent=message;el.style.color=error?'#ff8b9d':'var(--cyan)'}

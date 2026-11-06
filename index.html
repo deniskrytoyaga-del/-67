@@ -73,10 +73,29 @@ footer{padding:12px}
 .feature-banner span{position:absolute;right:12px;bottom:12px;padding:9px 13px;border-radius:12px;background:#090713dd;border:1px solid #58f4ef88;color:#58f4ef;font-size:11px;font-weight:900;letter-spacing:.08em;backdrop-filter:blur(10px)}
 @media(max-width:520px){.feature-banner{border-radius:16px}.feature-banner img{max-height:230px}.feature-banner span{font-size:9px;padding:7px 10px}}
 
+
+/* Bottom navigation + photo tab */
+body{padding-bottom:82px}
+.bottom-nav{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:80;width:min(620px,calc(100% - 24px));display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:7px;background:#100c1ceF;border:1px solid #a78bfa66;border-radius:20px;backdrop-filter:blur(18px);box-shadow:0 12px 45px #000b}
+.bottom-nav a{display:flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:8px 5px;border-radius:13px;text-decoration:none;color:var(--muted);font-size:11px;font-weight:900;white-space:nowrap;transition:.2s}
+.bottom-nav a:hover,.bottom-nav a.active{background:#58f4ef18;color:var(--cyan);box-shadow:inset 0 0 0 1px #58f4ef44}
+.photo-section{max-width:1050px;margin:0 auto 28px;padding:0 20px;scroll-margin-top:22px}
+.photo-section>.glass{width:100%;padding:clamp(18px,4vw,30px);text-align:center}
+.photo-frame{display:block;width:100%;max-height:560px;object-fit:contain;border-radius:18px;background:#090713;border:1px solid var(--border)}
+.photo-open{display:inline-flex;margin-top:14px;text-decoration:none;align-items:center;justify-content:center}
+.support-fab{bottom:88px}
+@media(max-width:520px){body{padding-bottom:78px}.bottom-nav{bottom:8px;gap:3px;padding:6px;border-radius:17px}.bottom-nav a{font-size:10px;gap:3px;min-height:42px;padding:7px 2px}.photo-section{padding:0 12px}.photo-frame{max-height:65vh}}
+
 </style>
 </head>
 <body>
 <div class="bg"><div class="stars"></div></div>
+<nav class="bottom-nav" aria-label="Основная навигация">
+<a href="#top" data-nav="home">⌂ Главная</a>
+<a href="#skinGrid" data-nav="shop">🛍 Магазин</a>
+<a href="#appsSection" data-nav="apps">📦 Приложения</a>
+<a href="#photoSection" data-nav="photo">🖼 Фото</a>
+</nav>
 <div class="wrap">
 <main class="hero">
 <div class="badge">ОФИЦИАЛЬНО. НАВЕРНОЕ.</div>
@@ -110,6 +129,11 @@ footer{padding:12px}
 </main>
 <section class="skin-section"><div class="glass"><div class="skin-head"><div class="label">МАГАЗИН 67</div><h2>Выбери свой скин</h2><p class="muted">Покупай облики за монеты и надевай любимый стиль. Прогресс сохраняется на этом устройстве.</p><div class="coins">Твой баланс: <span id="skinCoins">0</span> монет</div></div><div class="skin-grid" id="skinGrid"></div></div></section>
 <section class="apps-section" id="appsSection"><div class="glass"><div class="apps-head"><div class="label">67 APP STORE</div><h2>Приложения 67</h2><p class="muted">Приложение 67 для Android.</p></div><div class="apps-grid"><article class="app-card"><div class="app-icon">📱</div><h3>67 для Android</h3><p>Официальное приложение сайта 67 для Android.</p><a class="btn primary" style="display:block;text-decoration:none;text-align:center" href="https://github.com/deniskrytoyaga-del/67apkk/releases/download/apk-latest/app-debug.apk" target="_blank" rel="noopener">⬇ Скачать APK</a></article></div></div></section>
+<section class="photo-section" id="photoSection"><div class="glass">
+<div class="label">67 GALLERY</div><h2 style="font:800 clamp(1.35rem,4vw,2.2rem) Unbounded,sans-serif;margin:8px 0 16px">Фотография</h2>
+<img class="photo-frame" src="https://i.ibb.co/N2YZ8LTL/Screenshot-20261106-094353.png" alt="Фото из галереи 67" loading="lazy">
+<a class="btn primary photo-open" href="https://vk.ru/wall1096898647_73" target="_blank" rel="noopener noreferrer">Открыть публикацию ↗</a>
+</div></section>
 <section class="stats">
 <article class="glass stat"><strong>100%</strong><h3>числа 67</h3><p>Сертифицированная концентрация. Без примесей.</p></article>
 <article class="glass stat"><strong>0%</strong><h3>лишнего смысла</h3><p>Мы тщательно удалили всё, что не 67.</p></article>
@@ -367,7 +391,12 @@ $('accountPassword').addEventListener('keydown',e=>{if(e.key==='Enter')$('accoun
 $('accountLogout').onclick=async()=>{try{await accountRequest('/logout',{})}catch{}ACCOUNT_TOKEN='';localStorage.removeItem('six7_account_token');$('accountForm').classList.remove('hide');$('accountProfile').classList.remove('show');accountStatus('Ты вышел из аккаунта.')};
 if(ACCOUNT_TOKEN)accountRequest('/me').then(d=>showAccountProfile(d.profile)).catch(()=>{ACCOUNT_TOKEN='';localStorage.removeItem('six7_account_token')});
 
+
 supportInput.addEventListener('keydown',e=>{if(e.key==='Enter')sendSupport()});
+document.querySelectorAll('.bottom-nav a').forEach(a=>a.addEventListener('click',()=>{document.querySelectorAll('.bottom-nav a').forEach(x=>x.classList.remove('active'));a.classList.add('active')}));
+const navSections=[['home',document.querySelector('.hero')],['shop',document.querySelector('.skin-section')],['apps',document.querySelector('#appsSection')],['photo',document.querySelector('#photoSection')]];
+if('IntersectionObserver' in window){const navObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){const item=navSections.find(x=>x[1]===entry.target);if(item){document.querySelectorAll('.bottom-nav a').forEach(a=>a.classList.toggle('active',a.dataset.nav===item[0]))}}})},{rootMargin:'-35% 0px -55% 0px'});navSections.forEach(x=>x[1]&&navObserver.observe(x[1]));}
+
 
 </script>
 </body>

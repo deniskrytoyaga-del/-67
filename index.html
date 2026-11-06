@@ -109,6 +109,30 @@ body{padding-bottom:82px}
 .progress-count{text-align:center;color:var(--muted);font-size:12px;margin:13px 0 0}
 @media(max-width:520px){.progress-section{padding:0 12px}.daily-card{padding:14px}.daily-card .btn{width:100%}.achievement-grid{grid-template-columns:1fr 1fr;gap:7px}.achievement{padding:10px}.achievement-icon{font-size:21px}.achievement h3{font-size:11px}.achievement p{font-size:10px}}
 
+
+/* 67 pocket tools */
+.tools-section{max-width:1050px;margin:0 auto 26px;padding:0 20px;scroll-margin-top:22px}
+.tools-section>.glass{width:100%;padding:clamp(18px,4vw,30px)}
+.tools-head{text-align:center;margin-bottom:18px}
+.tools-head h2{font:800 clamp(1.3rem,4vw,2rem) Unbounded,sans-serif;margin:8px 0}
+.tools-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.tool-card{min-width:0;padding:16px;border:1px solid var(--border);border-radius:18px;background:#ffffff08}
+.tool-card h3{font:800 14px Unbounded,sans-serif;margin:0 0 8px}
+.tool-card p{color:var(--muted);font-size:11px;line-height:1.5}
+.tool-card input{width:100%;margin:6px 0}
+.tool-card textarea{display:block;width:100%;min-height:125px;resize:vertical;background:#ffffff10;border:1px solid var(--border);border-radius:13px;padding:12px;color:white;font:inherit;font-size:13px;outline:none}
+.tool-card textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #58f4ef22}
+.tool-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.tool-actions .btn{flex:1;min-width:90px;min-height:42px;padding:9px;font-size:11px}
+.tool-result{font:800 clamp(1.8rem,7vw,2.8rem) Unbounded,sans-serif;text-align:center;margin:12px 0;background:var(--grad);color:transparent;background-clip:text;overflow-wrap:anywhere}
+.todo-list{display:grid;gap:7px;margin-top:10px}
+.todo-row{display:flex;align-items:center;gap:8px;padding:9px;border:1px solid var(--border);border-radius:11px;background:#ffffff08;font-size:12px}
+.todo-row span{flex:1;overflow-wrap:anywhere}
+.todo-row.done span{text-decoration:line-through;color:var(--muted);opacity:.7}
+.todo-row button{border:0;background:transparent;color:#ff9bb9;font-size:17px;cursor:pointer}
+.todo-row input{width:17px;height:17px;flex:0 0 auto;margin:0;accent-color:#58f4ef}
+@media(max-width:600px){.tools-section{padding:0 12px}.tools-grid{grid-template-columns:1fr}.tool-card{padding:13px}.bottom-nav{grid-template-columns:repeat(5,minmax(0,1fr))}.bottom-nav a{font-size:9px;letter-spacing:-.02em}}
+
 </style>
 </head>
 <body>
@@ -117,6 +141,7 @@ body{padding-bottom:82px}
 <a href="#top" data-nav="home">⌂ Главная</a>
 <a href="#skinGrid" data-nav="shop">🛍 Магазин</a>
 <a href="#appsSection" data-nav="apps">📦 Приложения</a>
+<a href="#toolsSection" data-nav="tools">🧰 Инструменты</a>
 <a href="#photoSection" data-nav="photo">🖼 Фото</a>
 </nav>
 <div class="wrap">
@@ -152,6 +177,16 @@ body{padding-bottom:82px}
  <div class="progress-head"><div class="label">ПРОКАЧКА ИГРОКА</div><h2>Награды и достижения</h2><p class="muted">Заходи каждый день и собирай коллекцию достижений 67.</p></div>
  <div class="daily-card"><div><h3>🎁 Ежедневный бонус</h3><p>Забирай 15 монет раз в день. Прогресс хранится на этом устройстве.</p></div><button class="btn primary" id="dailyClaim">Забрать +15 🪙</button></div>
  <div class="achievement-grid" id="achievementGrid"></div><p class="progress-count" id="achievementCount">Открыто 0 из 6 достижений</p>
+</div></section>
+
+<section class="tools-section" id="toolsSection"><div class="glass">
+ <div class="tools-head"><div class="label">67 POCKET TOOLS</div><h2>Полезные инструменты</h2><p class="muted">Маленькие штуки, которые реально могут пригодиться. Данные хранятся на этом устройстве.</p></div>
+ <div class="tools-grid">
+  <article class="tool-card"><h3>📝 Быстрые заметки</h3><p>Запиши идею, чтобы не потерять. Автосохранение включено.</p><textarea id="quickNote" maxlength="4000" placeholder="Твоя заметка..."></textarea><div class="tool-actions"><button class="btn" id="copyNote">Копировать</button><button class="btn" id="clearNote">Очистить</button></div><p id="noteStatus" aria-live="polite">Сохраняется автоматически.</p></article>
+  <article class="tool-card"><h3>🎲 Случайное число</h3><p>Выбери диапазон — генератор выдаст число.</p><input id="randomMin" type="number" value="1" aria-label="Минимум"><input id="randomMax" type="number" value="100" aria-label="Максимум"><div class="tool-result" id="randomResult">67</div><div class="tool-actions"><button class="btn primary" id="rollNumber">Сгенерировать</button></div></article>
+  <article class="tool-card"><h3>✅ Мой список дел</h3><p>Добавляй задачи и отмечай выполненные.</p><div class="tool-actions"><input id="todoInput" maxlength="100" placeholder="Например: обновить сайт"><button class="btn primary" id="addTodo">Добавить</button></div><div class="todo-list" id="todoList"></div><p id="todoCount" aria-live="polite">0 задач</p></article>
+  <article class="tool-card"><h3>⏱ Мини-фокус</h3><p>Короткая сессия на 5 минут. Убери лишние отвлечения и займись одним делом.</p><div class="tool-result" id="focusTime">05:00</div><div class="tool-actions"><button class="btn primary" id="focusStart">Старт</button><button class="btn" id="focusReset">Сброс</button></div><p id="focusStatus" aria-live="polite">Готов к запуску.</p></article>
+ </div>
 </div></section>
 <section class="apps-section" id="appsSection"><div class="glass"><div class="apps-head"><div class="label">67 APP STORE</div><h2>Приложения 67</h2><p class="muted">Приложение 67 для Android.</p></div><div class="apps-grid"><article class="app-card"><div class="app-icon">📱</div><h3>67 для Android</h3><p>Официальное приложение сайта 67 для Android.</p><a class="btn primary" style="display:block;text-decoration:none;text-align:center" href="https://github.com/deniskrytoyaga-del/67apkk/releases/download/apk-latest/app-debug.apk" target="_blank" rel="noopener">⬇ Скачать APK</a></article></div></div></section>
 <section class="photo-section" id="photoSection"><div class="glass">
@@ -450,9 +485,33 @@ if(ACCOUNT_TOKEN)accountRequest('/me').then(d=>showAccountProfile(d.profile)).ca
 
 supportInput.addEventListener('keydown',e=>{if(e.key==='Enter')sendSupport()});
 document.querySelectorAll('.bottom-nav a').forEach(a=>a.addEventListener('click',()=>{document.querySelectorAll('.bottom-nav a').forEach(x=>x.classList.remove('active'));a.classList.add('active')}));
-const navSections=[['home',document.querySelector('.hero')],['shop',document.querySelector('.skin-section')],['apps',document.querySelector('#appsSection')],['photo',document.querySelector('#photoSection')]];
+const navSections=[['home',document.querySelector('.hero')],['shop',document.querySelector('.skin-section')],['apps',document.querySelector('#appsSection')],['tools',document.querySelector('#toolsSection')],['photo',document.querySelector('#photoSection')]];
 if('IntersectionObserver' in window){const navObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){const item=navSections.find(x=>x[1]===entry.target);if(item){document.querySelectorAll('.bottom-nav a').forEach(a=>a.classList.toggle('active',a.dataset.nav===item[0]))}}})},{rootMargin:'-35% 0px -55% 0px'});navSections.forEach(x=>x[1]&&navObserver.observe(x[1]));}
 
+
+
+/* 67 Pocket Tools: local notes, todo list, random number, focus timer */
+const note=$('quickNote'),noteStatus=$('noteStatus');
+note.value=localStorage.getItem('six7_quick_note')||'';
+let noteSaveTimer;
+note.addEventListener('input',()=>{clearTimeout(noteSaveTimer);noteStatus.textContent='Сохраняю…';noteSaveTimer=setTimeout(()=>{localStorage.setItem('six7_quick_note',note.value);noteStatus.textContent='Сохранено на этом устройстве ✓'},250)});
+$('copyNote').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(note.value);noteStatus.textContent='Заметка скопирована ✓'}catch{note.focus();note.select();noteStatus.textContent='Выделил текст — скопируй его вручную.'}});
+$('clearNote').addEventListener('click',()=>{note.value='';localStorage.removeItem('six7_quick_note');noteStatus.textContent='Заметка очищена.'});
+$('rollNumber').addEventListener('click',()=>{const min=Number($('randomMin').value),max=Number($('randomMax').value);if(!Number.isSafeInteger(min)||!Number.isSafeInteger(max)||max<min||max-min>1000000000){toast('Проверь диапазон чисел');return}$('randomResult').textContent=String(Math.floor(Math.random()*(max-min+1))+min)});
+let todos=[];try{const saved=JSON.parse(localStorage.getItem('six7_todos')||'[]');if(Array.isArray(saved))todos=saved.filter(x=>x&&typeof x.text==='string').slice(0,100)}catch{}
+function renderTodos(){
+ const list=$('todoList');list.replaceChildren();
+ todos.forEach((todo,index)=>{const row=document.createElement('div');row.className='todo-row'+(todo.done?' done':'');const check=document.createElement('input');check.type='checkbox';check.checked=!!todo.done;check.setAttribute('aria-label','Отметить задачу');check.addEventListener('change',()=>{todos[index].done=check.checked;saveTodos()});const label=document.createElement('span');label.textContent=todo.text;const remove=document.createElement('button');remove.type='button';remove.textContent='×';remove.setAttribute('aria-label','Удалить задачу');remove.addEventListener('click',()=>{todos.splice(index,1);saveTodos()});row.append(check,label,remove);list.append(row)});
+ const done=todos.filter(x=>x.done).length;$('todoCount').textContent=todos.length+' задач · выполнено '+done;
+}
+function saveTodos(){localStorage.setItem('six7_todos',JSON.stringify(todos));renderTodos()}
+function addTodo(){const input=$('todoInput'),value=input.value.trim();if(!value)return;if(todos.length>=100){toast('Максимум 100 задач');return}todos.push({text:value,done:false});input.value='';saveTodos()}
+$('addTodo').addEventListener('click',addTodo);$('todoInput').addEventListener('keydown',e=>{if(e.key==='Enter')addTodo()});renderTodos();
+let focusRemaining=300,focusInterval=null;
+function renderFocus(){$('focusTime').textContent=String(Math.floor(focusRemaining/60)).padStart(2,'0')+':'+String(focusRemaining%60).padStart(2,'0')}
+$('focusStart').addEventListener('click',()=>{if(focusInterval){clearInterval(focusInterval);focusInterval=null;$('focusStart').textContent='Продолжить';$('focusStatus').textContent='Пауза.';return}if(focusRemaining<=0)focusRemaining=300;$('focusStart').textContent='Пауза';$('focusStatus').textContent='Фокус-сессия идёт.';focusInterval=setInterval(()=>{focusRemaining--;renderFocus();if(focusRemaining<=0){clearInterval(focusInterval);focusInterval=null;$('focusStart').textContent='Заново';$('focusStatus').textContent='Готово! Отличная работа.';toast('Фокус-сессия завершена! 🎉')}},1000)});
+$('focusReset').addEventListener('click',()=>{if(focusInterval)clearInterval(focusInterval);focusInterval=null;focusRemaining=300;renderFocus();$('focusStart').textContent='Старт';$('focusStatus').textContent='Готов к запуску.'});
+renderFocus();
 
 </script>
 </body>

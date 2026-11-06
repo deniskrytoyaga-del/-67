@@ -234,6 +234,8 @@ h1,h2{letter-spacing:-.035em}
 @media(max-width:600px){.jokes-section{padding:0 12px}.joke-display{min-height:150px;padding:22px 15px}.bottom-nav{grid-template-columns:repeat(6,minmax(0,1fr))}.bottom-nav a{font-size:8px;letter-spacing:-.04em;gap:1px;padding-left:1px;padding-right:1px}}
 @media(min-width:900px){.jokes-section{max-width:1320px;padding-left:28px;padding-right:28px}}
 
+/* 67 number guessing mini-game */
+.guess-row{display:flex;gap:8px;align-items:center}.guess-row input{width:0;flex:1;min-width:0}.guess-record{color:var(--cyan)!important;font-weight:800}
 </style>
 </head>
 <body>
@@ -299,6 +301,7 @@ h1,h2{letter-spacing:-.035em}
   <article class="tool-card"><h3>🎲 Случайное число</h3><p>Выбери диапазон — генератор выдаст число.</p><input id="randomMin" type="number" value="1" aria-label="Минимум"><input id="randomMax" type="number" value="100" aria-label="Максимум"><div class="tool-result" id="randomResult">67</div><div class="tool-actions"><button class="btn primary" id="rollNumber">Сгенерировать</button></div></article>
   <article class="tool-card"><h3>✅ Мой список дел</h3><p>Добавляй задачи и отмечай выполненные.</p><div class="tool-actions"><input id="todoInput" maxlength="100" placeholder="Например: обновить сайт"><button class="btn primary" id="addTodo">Добавить</button></div><div class="todo-list" id="todoList"></div><p id="todoCount" aria-live="polite">0 задач</p></article>
   <article class="tool-card"><h3>⏱ Мини-фокус</h3><p>Короткая сессия на 5 минут. Убери лишние отвлечения и займись одним делом.</p><div class="tool-result" id="focusTime">05:00</div><div class="tool-actions"><button class="btn primary" id="focusStart">Старт</button><button class="btn" id="focusReset">Сброс</button></div><p id="focusStatus" aria-live="polite">Готов к запуску.</p></article>
+  <article class="tool-card"><h3>🕹 Угадай число 67</h3><p>Компьютер загадал число от 1 до 100. Попробуй найти его за минимальное число попыток!</p><div class="guess-row"><input id="guessInput" type="number" min="1" max="100" placeholder="Твоё число" aria-label="Твоё число"><button class="btn primary" id="guessTry">Проверить</button></div><div class="tool-result" id="guessResult" aria-live="polite">🎯 Готов?</div><p id="guessAttempts">Попыток: 0</p><div class="tool-actions"><button class="btn" id="guessRestart">Новая игра</button></div><p class="guess-record" id="guessRecord">Рекорд: пока нет</p></article>
  </div>
 </div></section>
 <section class="jokes-section" id="jokesSection"><div class="glass">
@@ -783,6 +786,14 @@ function renderFocus(){$('focusTime').textContent=String(Math.floor(focusRemaini
 $('focusStart').addEventListener('click',()=>{if(focusInterval){clearInterval(focusInterval);focusInterval=null;$('focusStart').textContent='Продолжить';$('focusStatus').textContent='Пауза.';return}if(focusRemaining<=0)focusRemaining=300;$('focusStart').textContent='Пауза';$('focusStatus').textContent='Фокус-сессия идёт.';focusInterval=setInterval(()=>{focusRemaining--;renderFocus();if(focusRemaining<=0){clearInterval(focusInterval);focusInterval=null;$('focusStart').textContent='Заново';$('focusStatus').textContent='Готово! Отличная работа.';toast('Фокус-сессия завершена! 🎉')}},1000)});
 $('focusReset').addEventListener('click',()=>{if(focusInterval)clearInterval(focusInterval);focusInterval=null;focusRemaining=300;renderFocus();$('focusStart').textContent='Старт';$('focusStatus').textContent='Готов к запуску.'});
 renderFocus();
+
+/* 67 number guessing game */
+let secret67=Math.floor(Math.random()*100)+1,guessCount=0,guessFinished=false;
+let guessRecord=Number(localStorage.getItem('six7_guess_record')||0);
+function renderGuessRecord(){$('guessRecord').textContent=guessRecord?'🏆 Рекорд: '+guessRecord+' попыток':'Рекорд: пока нет'}
+function resetGuess(){secret67=Math.floor(Math.random()*100)+1;guessCount=0;guessFinished=false;$('guessInput').value='';$('guessResult').textContent='🎯 Готов?';$('guessAttempts').textContent='Попыток: 0';$('guessTry').disabled=false}
+function tryGuess(){if(guessFinished)return;const value=Number($('guessInput').value);if(!Number.isInteger(value)||value<1||value>100){$('guessResult').textContent='Введи целое число от 1 до 100';return}guessCount++;$('guessAttempts').textContent='Попыток: '+guessCount;if(value===secret67){guessFinished=true;$('guessResult').textContent='🎉 Угадал! Это '+secret67+'!';$('guessTry').disabled=true;if(!guessRecord||guessCount<guessRecord){guessRecord=guessCount;localStorage.setItem('six7_guess_record',String(guessRecord));renderGuessRecord()}if(secret67===67){coins+=5;update();toast('ЛЕГЕНДА! Нашёл 67 — +5 монет 🪙')}else toast('Победа! Отличная работа 🎉')}else{$('guessResult').textContent=value<secret67?'⬆️ Загаданное число больше':'⬇️ Загаданное число меньше';$('guessInput').select()}}
+$('guessTry').addEventListener('click',tryGuess);$('guessRestart').addEventListener('click',resetGuess);$('guessInput').addEventListener('keydown',e=>{if(e.key==='Enter')tryGuess()});renderGuessRecord();
 
 </script>
 </body>

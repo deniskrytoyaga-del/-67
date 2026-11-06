@@ -19,7 +19,7 @@ async function passwordRecord(password) {
  return {salt, hash:await hashPassword(password,salt)};
 }
 async function getUser(request, env) {
- const token = (request.headers.get("Authorization") || "").replace(/^Bearer\\s+/i,"");
+ const token = (request.headers.get("Authorization") || "").replace(/^Bearer\s+/i,"");
  if (!token) return null;
  return await env.DB.prepare("SELECT users.id, users.username, users.coins, users.clicks, users.owned_skins, users.active_skin FROM sessions JOIN users ON users.id = sessions.user_id WHERE sessions.token_hash = ? AND sessions.expires_at > ?").bind(await sha256(token),Date.now()).first();
 }
@@ -111,7 +111,7 @@ export default {
     return json({profile:profile(updated)},200,headers);
    }
    if(path==="/logout" && request.method==="POST") {
-    const token=(request.headers.get("Authorization")||"").replace(/^Bearer\\s+/i,"");
+    const token=(request.headers.get("Authorization")||"").replace(/^Bearer\s+/i,"");
     if(token) await env.DB.prepare("DELETE FROM sessions WHERE token_hash=?").bind(await sha256(token)).run();
     return json({ok:true},200,headers);
    }

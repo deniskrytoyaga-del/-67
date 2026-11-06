@@ -86,6 +86,29 @@ body{padding-bottom:82px}
 .support-fab{bottom:88px}
 @media(max-width:520px){body{padding-bottom:78px}.bottom-nav{bottom:8px;gap:3px;padding:6px;border-radius:17px}.bottom-nav a{font-size:10px;gap:3px;min-height:42px;padding:7px 2px}.photo-section{padding:0 12px}.photo-frame{max-height:65vh}}
 
+
+/* Daily rewards and achievements */
+.progress-section{max-width:1050px;margin:0 auto 26px;padding:0 20px}
+.progress-section>.glass{width:100%;padding:clamp(18px,4vw,30px)}
+.progress-head{text-align:center;margin-bottom:18px}
+.progress-head h2{font:800 clamp(1.3rem,4vw,2rem) Unbounded,sans-serif;margin:8px 0}
+.daily-card{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:18px;border:1px solid #58f4ef66;border-radius:18px;background:linear-gradient(110deg,#58f4ef12,#a78bfa16)}
+.daily-card h3{margin:0 0 5px;font:800 16px Unbounded,sans-serif}
+.daily-card p{margin:0;color:var(--muted);font-size:12px}
+.daily-card .btn{min-width:150px}
+.daily-card .btn:disabled{opacity:.55;cursor:default;transform:none}
+.achievement-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-top:15px}
+.achievement{padding:14px;border:1px solid var(--border);border-radius:16px;background:#ffffff08}
+.achievement.done{border-color:#58f4ef88;background:#58f4ef0d}
+.achievement-top{display:flex;align-items:center;gap:10px}
+.achievement-icon{font-size:25px}
+.achievement h3{font-size:13px;margin:0}
+.achievement p{font-size:11px;color:var(--muted);margin:7px 0}
+.achievement-bar{height:5px;background:#ffffff16;border-radius:9px;overflow:hidden}
+.achievement-bar span{display:block;height:100%;background:var(--grad);border-radius:9px}
+.progress-count{text-align:center;color:var(--muted);font-size:12px;margin:13px 0 0}
+@media(max-width:520px){.progress-section{padding:0 12px}.daily-card{padding:14px}.daily-card .btn{width:100%}.achievement-grid{grid-template-columns:1fr 1fr;gap:7px}.achievement{padding:10px}.achievement-icon{font-size:21px}.achievement h3{font-size:11px}.achievement p{font-size:10px}}
+
 </style>
 </head>
 <body>
@@ -124,6 +147,12 @@ body{padding-bottom:82px}
 </div>
 </main>
 <section class="skin-section"><div class="glass"><div class="skin-head"><div class="label">МАГАЗИН 67</div><h2>Выбери свой скин</h2><p class="muted">Покупай облики за монеты и надевай любимый стиль. Прогресс сохраняется на этом устройстве.</p><div class="coins">Твой баланс: <span id="skinCoins">0</span> монет</div></div><div class="skin-grid" id="skinGrid"></div></div></section>
+
+<section class="progress-section" id="progressSection"><div class="glass">
+ <div class="progress-head"><div class="label">ПРОКАЧКА ИГРОКА</div><h2>Награды и достижения</h2><p class="muted">Заходи каждый день и собирай коллекцию достижений 67.</p></div>
+ <div class="daily-card"><div><h3>🎁 Ежедневный бонус</h3><p>Забирай 15 монет раз в день. Прогресс хранится на этом устройстве.</p></div><button class="btn primary" id="dailyClaim">Забрать +15 🪙</button></div>
+ <div class="achievement-grid" id="achievementGrid"></div><p class="progress-count" id="achievementCount">Открыто 0 из 6 достижений</p>
+</div></section>
 <section class="apps-section" id="appsSection"><div class="glass"><div class="apps-head"><div class="label">67 APP STORE</div><h2>Приложения 67</h2><p class="muted">Приложение 67 для Android.</p></div><div class="apps-grid"><article class="app-card"><div class="app-icon">📱</div><h3>67 для Android</h3><p>Официальное приложение сайта 67 для Android.</p><a class="btn primary" style="display:block;text-decoration:none;text-align:center" href="https://github.com/deniskrytoyaga-del/67apkk/releases/download/apk-latest/app-debug.apk" target="_blank" rel="noopener">⬇ Скачать APK</a></article></div></div></section>
 <section class="photo-section" id="photoSection"><div class="glass">
 <div class="label">67 GALLERY</div><h2 style="font:800 clamp(1.35rem,4vw,2.2rem) Unbounded,sans-serif;margin:8px 0 16px">Фотография</h2>
@@ -251,6 +280,37 @@ languageSelect.addEventListener('change',applyLanguage);
 const languageObserver=new MutationObserver(()=>{if(languageSelect.value!=='ru')applyLanguage()});
 languageObserver.observe(document.body,{childList:true,subtree:true,characterData:true});
 
+
+/* Daily reward + local achievements */
+const achievementDefs = [
+ {id:'first',icon:'👆',name:'Первый клик',desc:'Нажми на 67 один раз',goal:1,value:()=>clicks},
+ {id:'click67',icon:'⚡',name:'67 кликов',desc:'Сделай 67 кликов',goal:67,value:()=>clicks},
+ {id:'click670',icon:'🚀',name:'Легенда кликов',desc:'Сделай 670 кликов',goal:670,value:()=>clicks},
+ {id:'coins10',icon:'🪙',name:'Своя экономика',desc:'Накопи 10 монет',goal:10,value:()=>coins},
+ {id:'skins3',icon:'🎨',name:'Коллекционер',desc:'Собери 3 разных скина',goal:3,value:()=>ownedSkins.length},
+ {id:'skinsAll',icon:'🏆',name:'Мастер стиля',desc:'Собери все 6 скинов',goal:6,value:()=>ownedSkins.length}
+];
+function renderProgress(){
+ const grid=$('achievementGrid');if(!grid)return;
+ let count=0;
+ grid.innerHTML=achievementDefs.map(a=>{
+  const value=Math.max(0,Math.min(a.goal,Number(a.value())||0)),done=value>=a.goal;
+  if(done)count++;
+  return '<article class="achievement '+(done?'done':'')+'"><div class="achievement-top"><span class="achievement-icon">'+a.icon+'</span><h3>'+a.name+(done?' ✓':'')+'</h3></div><p>'+a.desc+' · '+value+'/'+a.goal+'</p><div class="achievement-bar"><span style="width:'+(value/a.goal*100)+'%"></span></div></article>';
+ }).join('');
+ $('achievementCount').textContent='Открыто '+count+' из '+achievementDefs.length+' достижений';
+ const today=new Date().toLocaleDateString('en-CA');
+ const claimed=localStorage.getItem('six7_daily_date')===today;
+ const button=$('dailyClaim');
+ if(button){button.disabled=claimed;button.textContent=claimed?'Уже получено ✓':'Забрать +15 🪙'}
+}
+$('dailyClaim').addEventListener('click',()=>{
+ const today=new Date().toLocaleDateString('en-CA');
+ if(localStorage.getItem('six7_daily_date')===today){toast('Бонус на сегодня уже получен!');renderProgress();return}
+ localStorage.setItem('six7_daily_date',today);
+ coins+=15;update();toast('Ежедневный бонус: +15 монет! 🎁');
+});
+
 let clicks=Number(localStorage.getItem('six7_clicks')||0),coins=Number(localStorage.getItem('six7_coins')||0),end=Number(localStorage.getItem('six7_end')||0),glow=localStorage.getItem('six7_glow')==='1',alarmOn=false;
 let ACCOUNT_API_URL=localStorage.getItem('six7_support_worker')||'https://shy-salad-d33d.deniskrytoyaga.workers.dev',ACCOUNT_TOKEN=localStorage.getItem('six7_account_token')||'',accountSaveTimer=null;
 const skins=[{id:'classic',name:'Классика',price:0,desc:'Оригинальный стиль 67'},{id:'neon',name:'Кибер-неон',price:5,desc:'Яркий цифровой градиент'},{id:'fire',name:'Огненный',price:10,desc:'67 горит ярким пламенем'},{id:'ice',name:'Ледяной',price:15,desc:'Холодное голубое сияние'},{id:'gold',name:'Золотой',price:25,desc:'Золотой статус легенды'},{id:'galaxy',name:'Галактика',price:40,desc:'Космический перелив цветов'}];
@@ -258,7 +318,7 @@ let ownedSkins=(()=>{try{const v=JSON.parse(localStorage.getItem('six7_owned_ski
 if(!['classic','neon','fire','ice','gold','galaxy'].includes(activeSkin))activeSkin='classic';
 const fmt=ms=>{let s=Math.max(0,Math.ceil(ms/1000));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')};
 function toast(t){$('toast').textContent=t;$('toast').classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2600)}
-function update(){ $('coins').textContent=coins;$('clicks').textContent=clicks;if($('skinCoins'))$('skinCoins').textContent=coins;localStorage.setItem('six7_clicks',clicks);localStorage.setItem('six7_coins',coins);renderSkins();if(ACCOUNT_TOKEN)queueAccountSave();}
+function update(){ renderProgress();$('coins').textContent=coins;$('clicks').textContent=clicks;if($('skinCoins'))$('skinCoins').textContent=coins;localStorage.setItem('six7_clicks',clicks);localStorage.setItem('six7_coins',coins);renderSkins();if(ACCOUNT_TOKEN)queueAccountSave();}
 function applySkin(){const el=$('big67');el.classList.remove(...skins.map(s=>'skin-'+s.id));if(activeSkin!=='classic')el.classList.add('skin-'+activeSkin);localStorage.setItem('six7_active_skin',activeSkin);}
 function renderSkins(){const grid=$('skinGrid');if(!grid)return;grid.innerHTML=skins.map(s=>{const own=ownedSkins.includes(s.id),active=activeSkin===s.id;return '<article class="skin-card '+(active?'equipped':'')+'"><div class="label">'+(own?(active?'НАДЕТО':'ТВОЙ СКИН'):'СКИН 67')+'</div><div class="skin-preview '+(s.id==='classic'?'':'skin-'+s.id)+'">67</div><h3>'+s.name+'</h3><p>'+s.desc+'</p><button class="btn '+(active?'':'primary')+'" data-skin="'+s.id+'">'+(active?'Надет':own?'Надеть':s.price+' 🪙')+'</button></article>'}).join('');grid.querySelectorAll('[data-skin]').forEach(b=>b.addEventListener('click',()=>{const s=skins.find(x=>x.id===b.dataset.skin);if(ownedSkins.includes(s.id)){activeSkin=s.id;applySkin();renderSkins();if(ACCOUNT_TOKEN)queueAccountSave();toast('Скин «'+s.name+'» надет!');return}if(coins<s.price){toast('Не хватает '+(s.price-coins)+' монет');return}coins-=s.price;ownedSkins.push(s.id);localStorage.setItem('six7_owned_skins',JSON.stringify(ownedSkins));activeSkin=s.id;applySkin();update();toast('Скин «'+s.name+'» куплен! 🎉')}));}
 function explode(){localStorage.setItem('six7_exploded','1');const b=document.createElement('div');b.className='boom';document.body.append(b);setTimeout(()=>{b.remove();$('overlayText').textContent='Ну всё. 67 взорвалось!';$('big67').textContent='67';toast('МИССИЯ 67 ВЫПОЛНЕНА 💥');},850);end=0;localStorage.removeItem('six7_end');$('timerText').textContent='БУМ';$('overlayTime').textContent='БУМ';}

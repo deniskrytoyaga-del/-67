@@ -1,0 +1,8 @@
+{
+  "appId": "com.site67.jokes",
+  "appName": "67 Шутки",
+  "webDir": "jokes",
+  "server": {
+    "androidScheme": "https"
+  }
+}

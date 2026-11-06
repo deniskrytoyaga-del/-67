@@ -65,6 +65,14 @@ footer{padding:12px}
  .skin-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
  .apps-jump{top:66px}
 }
+
+/* Featured image banner */
+.feature-banner{display:block;position:relative;width:min(850px,100%);max-height:310px;overflow:hidden;border:1px solid #a78bfa88;border-radius:22px;background:linear-gradient(120deg,#171126,#10252d);box-shadow:0 16px 50px #0007;transition:transform .22s,border-color .22s}
+.feature-banner:hover{transform:translateY(-3px);border-color:#58f4ef}
+.feature-banner img{display:block;width:100%;max-height:310px;object-fit:contain}
+.feature-banner span{position:absolute;right:12px;bottom:12px;padding:9px 13px;border-radius:12px;background:#090713dd;border:1px solid #58f4ef88;color:#58f4ef;font-size:11px;font-weight:900;letter-spacing:.08em;backdrop-filter:blur(10px)}
+@media(max-width:520px){.feature-banner{border-radius:16px}.feature-banner img{max-height:230px}.feature-banner span{font-size:9px;padding:7px 10px}}
+
 </style>
 </head>
 <body>
@@ -72,6 +80,10 @@ footer{padding:12px}
 <div class="wrap">
 <main class="hero">
 <div class="badge">ОФИЦИАЛЬНО. НАВЕРНОЕ.</div>
+<a class="feature-banner" href="https://vk.ru/wall1096898647_73" target="_blank" rel="noopener noreferrer" aria-label="Открыть публикацию ВКонтакте">
+<img src="https://i.ibb.co/N2YZ8LTL/Screenshot-20261106-094353.png" alt="Баннер 67">
+<span>ОТКРЫТЬ ПУБЛИКАЦИЮ ↗</span>
+</a>
 <div class="language-bar"><span>ЯЗЫК / LANGUAGE</span><select id="languageSelect" aria-label="Language"><option value="ru">Русский</option><option value="en">English</option><option value="meow">Мяу-мяу</option><option value="67">67</option></select></div>
 <p class="hello">Привет!</p>
 <p class="title">САМЫЙ ПОЛЕЗНЫЙ САЙТ НА ПЛАНЕТЕ</p>

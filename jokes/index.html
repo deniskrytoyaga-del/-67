@@ -39,7 +39,10 @@ body.light .searchrow input{background:#fff;color:#171329}
 body.light .search-result{color:#171329;background:#ffffffb8}
 @media(max-width:560px){body{padding:16px 12px 30px}.tools{grid-template-columns:1fr 1fr}.joke{min-height:165px}.searchrow{flex-direction:column}.searchrow .btn{width:100%}}
 
+
+.interface-joke{display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;padding:14px 18px;margin:0 auto 2px;width:min(620px,100%);border:1px solid #a78bfa55;border-radius:18px;background:linear-gradient(110deg,#a78bfa12,#58f4ef0c);box-shadow:0 10px 35px #0003}.interface-joke-tag{font-size:9px;letter-spacing:.16em;font-weight:1000;color:var(--cyan)}#interfaceJokeText{font-size:14px;line-height:1.45;font-weight:750;color:var(--ink)}
 </style></head><body><main class="app"><header class="top"><div class="logo">67 / LAB</div><a class="back" href="../">← На сайт 67</a></header><div class="badge">306300 ШТУК БЕССМЫСЛИЦЫ</div><h1 class="title">ГЕНЕРАТОР <span>ТУПЫХ ШУТОК</span></h1><p class="sub">Юмор настолько плохой, что это уже отдельный жанр.</p>
+<div class="interface-joke" id="interfaceJoke"><span class="interface-joke-tag">💬 СООБЩЕНИЕ ОТ ИНТЕРФЕЙСА</span><span id="interfaceJokeText">Загрузка шутки…</span></div>
 <section class="panel">
   <p class="section-label">ПОИСК ПО 306300 ШУТКАМ</p>
   <div class="searchrow"><input id="searchInput" type="search" placeholder="Найти шутку по слову…"><button class="btn" id="clearSearch">✕ Очистить</button></div>
@@ -163,5 +166,40 @@ $('totalCount').textContent=jokes.length;show(0);renderFav();if('serviceWorker'i
    if(e.key.toLowerCase()==='f')$('favorite').click();
  });
  $('progressFill').style.width=((current+1)/jokes.length*100)+'%';
+})();
+</script><script>
+(()=>{
+const lines=[
+"Кнопка нажата. Уровень интеллекта интерфейса официально понижен.",
+"Поиск ищет смысл жизни. Пока нашёл только огурец.",
+"Избранное сохранено. Эти шутки теперь под защитой холодильника.",
+"Счётчик растёт. А шутки всё ещё не взрослеют.",
+"Тема переключена. Даже пиксели переоделись.",
+"Загрузка завершена. Голубь одобрил результат.",
+"Эта шутка настолько странная, что калькулятор попросил перерыв.",
+"Случайность выбрана случайно. Всё идёт по плану табуретки.",
+"Копирование успешно. Теперь эту глупость можно распространять.",
+"История помнит всё. Даже тот раз, когда ты нажал сюда.",
+"67 лаборатория предупреждает: возможен внезапный вопрос: что я прочитал?",
+"Сервер не завис. Он просто задумался о макаронах.",
+"У интерфейса есть чувства. Сейчас он немного пельмень.",
+"Нажми ещё раз. Вдруг в этот раз будет смешно. Хотя нет.",
+"Тут могла быть умная мысль, но её забрал голубь.",
+"Шутки бесплатные. Стыд за них — тоже.",
+"Мы проверили юмор. Проверка не прошла, поэтому оставили всё как есть.",
+"Если ты улыбаешься — это ошибка. Если нет — тоже штатная работа."
+];
+const box=document.getElementById("interfaceJokeText");if(!box)return;
+let last=-1;
+function rotate(){let n=Math.floor(Math.random()*lines.length);while(n===last)n=Math.floor(Math.random()*lines.length);last=n;box.textContent=lines[n];}
+rotate();setInterval(rotate,6500);
+const bind=(id,msg)=>{const el=document.getElementById(id);if(el)el.addEventListener("click",()=>{box.textContent=msg;last=-1;});};
+bind("next","Новая шутка вызвана. Ответственность за прочитанное лежит на голубе.");
+bind("random","Случай выбрал тебя. Случай сам не знает зачем.");
+bind("favorite","Избранное пополнилось. Коллекция странностей растёт.");
+bind("daily","Шутка дня доставлена. День уже не спасти.");
+bind("theme","Смена темы завершена. Пиксели выглядят довольными.");
+bind("copy","Скопировано! Передавай эту глупость по наследству.");
+bind("share","Поделиться абсурдом — благородное дело.");
 })();
 </script></body></html>

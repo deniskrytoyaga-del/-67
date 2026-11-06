@@ -19,6 +19,10 @@
 .support-panel{position:fixed;right:18px;bottom:84px;z-index:31;width:min(390px,calc(100vw - 28px));height:min(570px,calc(100dvh - 115px));display:none;flex-direction:column;background:#100c1c;border:1px solid #a78bfa66;border-radius:22px;box-shadow:0 20px 80px #000b;overflow:hidden}
 .support-panel.open{display:flex;animation:up .2s both}.support-top{padding:14px 16px;background:linear-gradient(110deg,#292044,#142c39);display:flex;justify-content:space-between;align-items:center}.support-top strong{font:800 14px Unbounded}.support-top small{display:block;color:var(--muted);margin-top:5px}.support-close{background:none;border:0;color:white;font-size:24px;cursor:pointer}
 .support-log{padding:14px;display:flex;flex-direction:column;gap:10px;overflow:auto;flex:1}.support-msg{max-width:88%;padding:11px 13px;border-radius:15px;font-size:13px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}.support-msg.bot{align-self:flex-start;background:#ffffff12;border:1px solid #ffffff18}.support-msg.user{align-self:flex-end;background:#55418a}.support-compose{display:flex;gap:8px;padding:12px;border-top:1px solid var(--border)}.support-compose input{width:0}.support-compose button{min-width:48px}.support-note{padding:0 13px 10px;color:#9589a7;font-size:10px}
+
+/* 67 Apps hub */
+.apps-jump{position:fixed;right:18px;top:18px;z-index:29;border:1px solid var(--border);border-radius:15px;padding:12px 16px;background:#171126;color:var(--ink);font-weight:900;cursor:pointer}
+.apps-section{max-width:1050px;margin:0 auto 75px;padding:0 20px;scroll-margin-top:24px}.apps-section>.glass{width:100%;padding:clamp(18px,4vw,30px)}.apps-head{text-align:center;margin-bottom:22px}.apps-head h2{font:800 clamp(1.35rem,4vw,2.2rem) Unbounded,sans-serif;margin:8px 0}.apps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}.app-card{padding:20px;border:1px solid var(--border);border-radius:20px;background:#ffffff08}.app-icon{font-size:38px}.app-card h3{font:800 17px Unbounded,sans-serif;margin:12px 0 8px}.app-card p{color:var(--muted);font-size:13px;line-height:1.6;min-height:42px}.app-card .btn{width:100%;margin-top:8px}@media(max-width:520px){.apps-jump{top:66px;right:12px;padding:9px 12px;font-size:12px}.language-bar{top:12px;right:12px}}
 </style>
 </head>
 <body>
@@ -51,6 +55,7 @@
 </div>
 </main>
 <section class="skin-section"><div class="glass"><div class="skin-head"><div class="label">МАГАЗИН 67</div><h2>Выбери свой скин</h2><p class="muted">Покупай облики за монеты и надевай любимый стиль. Прогресс сохраняется на этом устройстве.</p><div class="coins">Твой баланс: <span id="skinCoins">0</span> монет</div></div><div class="skin-grid" id="skinGrid"></div></div></section>
+<section class="apps-section" id="appsSection"><div class="glass"><div class="apps-head"><div class="label">67 APP STORE</div><h2>Приложения 67</h2><p class="muted">Полезные штуки от 67. Пока здесь первое приложение — сам сайт.</p></div><div class="apps-grid"><article class="app-card"><div class="app-icon">🌐</div><h3>Сайт 67 в HTML</h3><p>Скачай текущую версию сайта одним HTML-файлом. Его можно сохранить и открыть в браузере.</p><button class="btn primary" id="downloadSiteHtml">⬇ Скачать сайт .html</button></article></div></div></section>
 <section class="stats">
 <article class="glass stat"><strong>100%</strong><h3>числа 67</h3><p>Сертифицированная концентрация. Без примесей.</p></article>
 <article class="glass stat"><strong>0%</strong><h3>лишнего смысла</h3><p>Мы тщательно удалили всё, что не 67.</p></article>
@@ -72,6 +77,7 @@
 </div>
 
 <button class="account-fab" id="accountOpen">👤 Мой аккаунт</button>
+<button class="apps-jump" id="appsJump">📦 Приложения</button>
 <div class="account-modal" id="accountModal" role="dialog" aria-modal="true">
  <div class="account-box">
   <div style="display:flex;justify-content:space-between;align-items:center"><h2>АККАУНТ 67</h2><button class="support-close" id="accountClose">×</button></div>
@@ -99,6 +105,8 @@
 </section>
 <script>
 const $=id=>document.getElementById(id);
+$('appsJump').addEventListener('click',()=>$('appsSection').scrollIntoView({behavior:'smooth'}));
+$('downloadSiteHtml').addEventListener('click',()=>{try{const html='<!doctype html>\\n'+document.documentElement.outerHTML;const blob=new Blob([html],{type:'text/html;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='67-site.html';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);toast('Сайт 67 скачивается в формате HTML!');}catch(e){toast('Не удалось создать HTML-файл: '+e.message)}});
 
 const languageSelect=$('languageSelect');
 const translations={

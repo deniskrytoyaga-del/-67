@@ -1,0 +1,9 @@
+{
+  "name": "67 — Генератор тупых шуток",
+  "short_name": "67 Шутки",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#090713",
+  "theme_color": "#090713",
+  "description": "300 максимально тупых шуток."
+}

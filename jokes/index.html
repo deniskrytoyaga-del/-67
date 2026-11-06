@@ -42,7 +42,7 @@ body.light .search-result{color:#171329;background:#ffffffb8}
 
 .interface-joke{display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;padding:14px 18px;margin:0 auto 2px;width:min(620px,100%);border:1px solid #a78bfa55;border-radius:18px;background:linear-gradient(110deg,#a78bfa12,#58f4ef0c);box-shadow:0 10px 35px #0003}.interface-joke-tag{font-size:9px;letter-spacing:.16em;font-weight:1000;color:var(--cyan)}#interfaceJokeText{font-size:14px;line-height:1.45;font-weight:750;color:var(--ink)}
 
-.jokes-tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;margin:0 0 4px}
+.jokes-tabs{position:sticky;top:8px;z-index:25;display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;margin:0 0 4px;padding:6px;border:1px solid #ffffff20;border-radius:18px;background:#100c1ceF;backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);box-shadow:0 10px 35px #0007}
 .jokes-tab{display:flex;align-items:center;justify-content:center;text-align:center;min-height:48px;padding:11px 12px;border-radius:14px;border:1px solid var(--border);background:#ffffff0b;color:var(--muted);text-decoration:none;font-size:13px;font-weight:950;transition:.2s}
 .jokes-tab.active,.jokes-tab:hover{color:var(--cyan);border-color:#58f4ef88;background:#58f4ef14;box-shadow:0 8px 26px #58f4ef18}
 #downloadTab{scroll-margin-top:18px;border-color:#58f4ef66}

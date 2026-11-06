@@ -215,6 +215,22 @@ h1,h2{letter-spacing:-.035em}
  *,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
 
+
+/* 67 Comedy Club */
+.jokes-section{max-width:1050px;margin:0 auto 28px;padding:0 20px;scroll-margin-top:24px}
+.jokes-section>.glass{width:100%;padding:clamp(20px,4vw,34px)}
+.jokes-head{text-align:center;margin-bottom:20px}
+.jokes-head h2{font:800 clamp(1.4rem,4vw,2.1rem) Unbounded,sans-serif;margin:9px 0}
+.joke-display{position:relative;min-height:170px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:28px 20px;border-radius:22px;border:1px solid rgba(167,139,250,.35);background:radial-gradient(ellipse at 50% 0%,rgba(167,139,250,.18),transparent 65%),rgba(255,255,255,.035)}
+.joke-mark{font:900 12px Unbounded,sans-serif;letter-spacing:.22em;color:var(--cyan);opacity:.8}
+.joke-display p{font-size:clamp(16px,2.5vw,22px);font-weight:800;line-height:1.55;max-width:720px;margin:14px auto 0}
+.jokes-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:16px}
+.joke-counter{text-align:center;color:var(--muted);font-size:11px;margin:12px 0 0}
+.joke-pop{animation:jokePop .35s ease both}
+@keyframes jokePop{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:600px){.jokes-section{padding:0 12px}.joke-display{min-height:150px;padding:22px 15px}.bottom-nav{grid-template-columns:repeat(6,minmax(0,1fr))}.bottom-nav a{font-size:8px;letter-spacing:-.04em;gap:1px;padding-left:1px;padding-right:1px}}
+@media(min-width:900px){.jokes-section{max-width:1320px;padding-left:28px;padding-right:28px}}
+
 </style>
 </head>
 <body>
@@ -224,6 +240,7 @@ h1,h2{letter-spacing:-.035em}
 <a href="#skinGrid" data-nav="shop">🛍 Магазин</a>
 <a href="#appsSection" data-nav="apps">📦 Приложения</a>
 <a href="#toolsSection" data-nav="tools">🧰 Инструменты</a>
+<a href="#jokesSection" data-nav="jokes">😂 Шутки</a>
 <a href="#photoSection" data-nav="photo">🖼 Фото</a>
 </nav>
 <div class="wrap">
@@ -258,7 +275,7 @@ h1,h2{letter-spacing:-.035em}
 <section class="progress-section" id="progressSection"><div class="glass">
  <div class="progress-head"><div class="label">ПРОКАЧКА ИГРОКА</div><h2>Награды и достижения</h2><p class="muted">Заходи каждый день и собирай коллекцию достижений 67.</p></div>
  <div class="daily-card"><div><h3>🎁 Ежедневный бонус</h3><p>Забирай 15 монет раз в день. Прогресс хранится на этом устройстве.</p></div><button class="btn primary" id="dailyClaim">Забрать +15 🪙</button></div>
- <div class="achievement-grid" id="achievementGrid"></div><p class="progress-count" id="achievementCount">Открыто 0 из 6 достижений</p>
+ <div class="achievement-grid" id="achievementGrid"></div><p class="progress-count" id="achievementCount">Открыто 0 из 7 достижений</p>
  <div class="time-missions">
   <div class="time-missions-head"><div><div class="label">ВРЕМЯ НА 67</div><h3>⏳ Испытания на время</h3><p class="muted">Считается время, пока сайт открыт на переднем плане. В фоне таймер стоит.</p></div><div class="time-total"><strong id="siteTimeToday">00:00</strong><span>сегодня на сайте</span></div></div>
   <div class="time-mission-grid">
@@ -278,6 +295,12 @@ h1,h2{letter-spacing:-.035em}
   <article class="tool-card"><h3>✅ Мой список дел</h3><p>Добавляй задачи и отмечай выполненные.</p><div class="tool-actions"><input id="todoInput" maxlength="100" placeholder="Например: обновить сайт"><button class="btn primary" id="addTodo">Добавить</button></div><div class="todo-list" id="todoList"></div><p id="todoCount" aria-live="polite">0 задач</p></article>
   <article class="tool-card"><h3>⏱ Мини-фокус</h3><p>Короткая сессия на 5 минут. Убери лишние отвлечения и займись одним делом.</p><div class="tool-result" id="focusTime">05:00</div><div class="tool-actions"><button class="btn primary" id="focusStart">Старт</button><button class="btn" id="focusReset">Сброс</button></div><p id="focusStatus" aria-live="polite">Готов к запуску.</p></article>
  </div>
+</div></section>
+<section class="jokes-section" id="jokesSection"><div class="glass">
+ <div class="jokes-head"><div class="label">67 COMEDY CLUB</div><h2>😂 Комната шуток</h2><p class="muted">Нажимай кнопку — получай новую порцию юмора от 67.</p></div>
+ <article class="joke-display" aria-live="polite"><span class="joke-mark">67</span><p id="jokeText">Почему 67 никогда не опаздывает? Потому что оно всегда на шаг впереди 66.</p></article>
+ <div class="jokes-actions"><button class="btn primary" id="nextJoke">Ещё шутку 🎲</button><button class="btn" id="copyJoke">Копировать</button></div>
+ <p class="joke-counter" id="jokeCounter">Шутка 1 из 12</p>
 </div></section>
 <section class="apps-section" id="appsSection"><div class="glass"><div class="apps-head"><div class="label">67 APP STORE</div><h2>Приложения 67</h2><p class="muted">Приложение 67 для Android.</p></div><div class="apps-grid"><article class="app-card"><div class="app-icon">📱</div><h3>67 для Android</h3><p>Официальное приложение сайта 67 для Android.</p><a class="btn primary" style="display:block;text-decoration:none;text-align:center" href="https://github.com/deniskrytoyaga-del/67apkk/releases/download/apk-latest/app-debug.apk" target="_blank" rel="noopener">⬇ Скачать APK</a></article></div></div></section>
 <section class="photo-section" id="photoSection"><div class="glass">
@@ -408,13 +431,15 @@ languageObserver.observe(document.body,{childList:true,subtree:true,characterDat
 
 
 /* Daily reward + local achievements */
+let caught67 = localStorage.getItem('six7_caught_67') === '1';
 const achievementDefs = [
  {id:'first',icon:'👆',name:'Первый клик',desc:'Нажми на 67 один раз',goal:1,value:()=>clicks},
  {id:'click67',icon:'⚡',name:'67 кликов',desc:'Сделай 67 кликов',goal:67,value:()=>clicks},
  {id:'click670',icon:'🚀',name:'Легенда кликов',desc:'Сделай 670 кликов',goal:670,value:()=>clicks},
  {id:'coins10',icon:'🪙',name:'Своя экономика',desc:'Накопи 10 монет',goal:10,value:()=>coins},
  {id:'skins3',icon:'🎨',name:'Коллекционер',desc:'Собери 3 разных скина',goal:3,value:()=>ownedSkins.length},
- {id:'skinsAll',icon:'🏆',name:'Мастер стиля',desc:'Собери все 6 скинов',goal:6,value:()=>ownedSkins.length}
+ {id:'skinsAll',icon:'🏆',name:'Мастер стиля',desc:'Собери все 6 скинов',goal:6,value:()=>ownedSkins.length},
+ {id:'catch67',icon:'🎯',name:'Поймал 67!',desc:'Получи число 67 в генераторе случайных чисел',goal:1,value:()=>caught67?1:0}
 ];
 function renderProgress(){
  const grid=$('achievementGrid');if(!grid)return;
@@ -468,6 +493,30 @@ if(glow)$('big67').style.filter='drop-shadow(0 0 85px #58f4ef)';
 if(!ownedSkins.includes('classic'))ownedSkins.unshift('classic');applySkin();
 if(end){$('timerAction').textContent='Сбросить таймер';$('timerCaption').textContent='Обратный отсчёт идёт. Нажми на карточку, чтобы посмотреть.'}
 update();tick();setInterval(tick,250);
+
+/* 67 jokes: local rotation, no external service */
+const jokes67=[
+'Почему 67 никогда не опаздывает? Потому что оно всегда на шаг впереди 66.',
+'Учитель: «Назови число между 66 и 68». Ученик: «Легенда».',
+'Почему компьютер любит 67? Потому что у него отличный битовый вкус.',
+'67 зашло в магазин. Продавец: «Вам пакет нужен?» — «Нет, мне целая коллекция».',
+'Что сказал 67 числу 68? «Не выпендривайся, ты просто следующий».',
+'Почему 67 не спорит? Оно уже всё посчитало.',
+'Математик увидел 67 и сказал: «Вот это я понимаю — аргумент».',
+'Как 67 отдыхает? Считает овец до 68 и засыпает.',
+'Почему 67 не играет в прятки? Его всё равно найдут по репутации.',
+'Телефон спросил 67: «Сколько у тебя контактов?» — «Шестьдесят семь. И все легенды».',
+'Почему 67 взяло зонт? Потому что прогноз обещал 68 процентов вероятности дождя.',
+'67 пришло на вечеринку. Даже калькулятор попросил автограф.'
+];
+let jokeIndex=0;
+function showJoke(next=true){
+ if(next)jokeIndex=(jokeIndex+1+Math.floor(Math.random()*(jokes67.length-1)))%jokes67.length;
+ const box=$('jokeText');box.classList.remove('joke-pop');void box.offsetWidth;box.textContent=jokes67[jokeIndex];box.classList.add('joke-pop');
+ $('jokeCounter').textContent='Шутка '+(jokeIndex+1)+' из '+jokes67.length;
+}
+$('nextJoke').addEventListener('click',()=>showJoke(true));
+$('copyJoke').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('jokeText').textContent);toast('Шутка скопирована!')}catch{toast('Не удалось скопировать шутку')}});
 
 /* 67 Support AI — the API key stays on the server, never in this page. */
 const DEFAULT_SUPPORT_WORKER_URL = 'https://shy-salad-d33d.deniskrytoyaga.workers.dev';
@@ -576,7 +625,7 @@ if(ACCOUNT_TOKEN)accountRequest('/me').then(d=>showAccountProfile(d.profile)).ca
 
 supportInput.addEventListener('keydown',e=>{if(e.key==='Enter')sendSupport()});
 document.querySelectorAll('.bottom-nav a').forEach(a=>a.addEventListener('click',()=>{document.querySelectorAll('.bottom-nav a').forEach(x=>x.classList.remove('active'));a.classList.add('active')}));
-const navSections=[['home',document.querySelector('.hero')],['shop',document.querySelector('.skin-section')],['apps',document.querySelector('#appsSection')],['tools',document.querySelector('#toolsSection')],['photo',document.querySelector('#photoSection')]];
+const navSections=[['home',document.querySelector('.hero')],['shop',document.querySelector('.skin-section')],['apps',document.querySelector('#appsSection')],['tools',document.querySelector('#toolsSection')],['jokes',document.querySelector('#jokesSection')],['photo',document.querySelector('#photoSection')]];
 if('IntersectionObserver' in window){const navObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){const item=navSections.find(x=>x[1]===entry.target);if(item){document.querySelectorAll('.bottom-nav a').forEach(a=>a.classList.toggle('active',a.dataset.nav===item[0]))}}})},{rootMargin:'-35% 0px -55% 0px'});navSections.forEach(x=>x[1]&&navObserver.observe(x[1]));}
 
 
@@ -619,7 +668,7 @@ let noteSaveTimer;
 note.addEventListener('input',()=>{clearTimeout(noteSaveTimer);noteStatus.textContent='Сохраняю…';noteSaveTimer=setTimeout(()=>{localStorage.setItem('six7_quick_note',note.value);noteStatus.textContent='Сохранено на этом устройстве ✓'},250)});
 $('copyNote').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(note.value);noteStatus.textContent='Заметка скопирована ✓'}catch{note.focus();note.select();noteStatus.textContent='Выделил текст — скопируй его вручную.'}});
 $('clearNote').addEventListener('click',()=>{note.value='';localStorage.removeItem('six7_quick_note');noteStatus.textContent='Заметка очищена.'});
-$('rollNumber').addEventListener('click',()=>{const min=Number($('randomMin').value),max=Number($('randomMax').value);if(!Number.isSafeInteger(min)||!Number.isSafeInteger(max)||max<min||max-min>1000000000){toast('Проверь диапазон чисел');return}$('randomResult').textContent=String(Math.floor(Math.random()*(max-min+1))+min)});
+$('rollNumber').addEventListener('click',()=>{const min=Number($('randomMin').value),max=Number($('randomMax').value);if(!Number.isSafeInteger(min)||!Number.isSafeInteger(max)||max<min||max-min>1000000000){toast('Проверь диапазон чисел');return}const result=Math.floor(Math.random()*(max-min+1))+min;$('randomResult').textContent=String(result);if(result===67&&!caught67){caught67=true;localStorage.setItem('six7_caught_67','1');renderProgress();toast('🎯 ПОЙМАЛ 67! Достижение открыто!')}});
 let todos=[];try{const saved=JSON.parse(localStorage.getItem('six7_todos')||'[]');if(Array.isArray(saved))todos=saved.filter(x=>x&&typeof x.text==='string').slice(0,100)}catch{}
 function renderTodos(){
  const list=$('todoList');list.replaceChildren();

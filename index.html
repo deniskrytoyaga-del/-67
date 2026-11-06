@@ -263,8 +263,9 @@ async function sendSupport(){
  const waiting=supportBubble('67 думает… (это может занять пару секунд)','bot');
  $('supportSend').disabled=true;
  try{
-  const res=await fetch(SUPPORT_WORKER_URL.replace(/\/$/,'')+'/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:supportHistory.slice(-12)})});
-  const data=await res.json();if(!res.ok)throw new Error(data.error||'Ошибка сервера '+res.status);
+  const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),25000);
+  let res,data;try{res=await fetch(SUPPORT_WORKER_URL.replace(/\/$/,'')+'/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:supportHistory.slice(-12)}),signal:controller.signal});data=await res.json().catch(()=>({error:'Сервер вернул не JSON-ответ.'}));}finally{clearTimeout(timeout)}
+  if(!res.ok)throw new Error(data.error||'Ошибка сервера '+res.status);
   waiting.textContent=data.reply||'67';supportHistory.push({role:'assistant',content:waiting.textContent});
  }catch(e){const reason=e.name==='AbortError'?'Сервер долго отвечает — попробуй ещё раз через минуту.':e.message;waiting.textContent='Поддержка 67 временно недоступна. '+reason+' (сервер: '+SUPPORT_WORKER_URL+')';supportHistory.pop()}
  finally{$('supportSend').disabled=false;supportInput.focus()}

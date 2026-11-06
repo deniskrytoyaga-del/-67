@@ -92,7 +92,7 @@ const baseJokes=jokes;
 jokes=new Proxy(baseJokes,{
  get(target,prop,receiver){
   if(prop==="length")return baseCount+megaCount;
-  if(typeof prop==="string"&&/^(0|[1-9]\\d*)$/.test(prop)){
+  if(typeof prop==="string"&&/^(0|[1-9]\d*)$/.test(prop)){
    const index=Number(prop);
    if(index>=baseCount&&index<baseCount+megaCount){
     const n=index-baseCount;

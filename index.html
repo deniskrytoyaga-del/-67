@@ -168,6 +168,53 @@ body{padding-bottom:82px}
 .todo-row input{width:17px;height:17px;flex:0 0 auto;margin:0;accent-color:#58f4ef}
 @media(max-width:600px){.tools-section{padding:0 12px}.tools-grid{grid-template-columns:1fr}.tool-card{padding:13px}.bottom-nav{grid-template-columns:repeat(5,minmax(0,1fr))}.bottom-nav a{font-size:9px;letter-spacing:-.02em}}
 
+
+
+/* 67 LIQUID GLASS REDESIGN */
+:root{--glass:rgba(255,255,255,.075);--border:rgba(255,255,255,.16)}
+body{background:radial-gradient(ellipse at 12% 8%,rgba(88,244,239,.13),transparent 34%),radial-gradient(ellipse at 88% 22%,rgba(167,139,250,.16),transparent 36%),radial-gradient(ellipse at 55% 92%,rgba(255,120,210,.09),transparent 38%),#080711;background-attachment:fixed}
+body:before,body:after{content:"";position:fixed;z-index:-1;pointer-events:none;width:38vw;height:38vw;min-width:260px;min-height:260px;border-radius:50%;filter:blur(85px);opacity:.2;animation:orbFloat 18s ease-in-out infinite alternate}
+body:before{background:#58f4ef;top:8%;left:-17%}
+body:after{background:#a66cff;right:-18%;bottom:4%;animation-delay:-8s}
+@keyframes orbFloat{0%{transform:translate3d(0,0,0) scale(.85)}100%{transform:translate3d(8vw,5vh,0) scale(1.18)}}
+.glass,.tool-card,.achievement,.time-mission,.daily-card,.bottom-nav,.modal-content,.shop-card,.app-card,.skin-card,.support-panel{background:linear-gradient(145deg,rgba(255,255,255,.105),rgba(255,255,255,.035))!important;border:1px solid rgba(255,255,255,.17)!important;backdrop-filter:blur(24px) saturate(155%);-webkit-backdrop-filter:blur(24px) saturate(155%);box-shadow:0 18px 55px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.11)}
+.glass{border-radius:26px}
+section,.progress-section,.tools-section,.photo-section{animation:sectionRise .75s cubic-bezier(.2,.75,.25,1) both}
+@keyframes sectionRise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.tool-card,.achievement,.time-mission,.shop-card,.app-card,.skin-card{transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease}
+.tool-card:hover,.achievement:hover,.time-mission:hover,.shop-card:hover,.app-card:hover,.skin-card:hover{transform:translateY(-5px);border-color:rgba(88,244,239,.5)!important;box-shadow:0 18px 40px rgba(0,0,0,.3),0 0 28px rgba(88,244,239,.08)}
+button,.btn,.bottom-nav a{transition:transform .22s ease,filter .22s ease,box-shadow .22s ease}
+button:active,.btn:active,.bottom-nav a:active{transform:scale(.96)}
+.btn{box-shadow:0 7px 24px rgba(88,244,239,.1)}
+.btn:hover{filter:brightness(1.12);box-shadow:0 9px 30px rgba(167,139,250,.2)}
+.bottom-nav{width:min(850px,calc(100% - 30px));border-radius:24px!important;background:rgba(15,12,29,.72)!important}
+.bottom-nav a{font-size:12px}
+input,textarea,select{background:rgba(255,255,255,.075)!important;border:1px solid rgba(255,255,255,.16)!important;backdrop-filter:blur(12px);color:var(--ink)}
+input:focus,textarea:focus,select:focus{border-color:var(--cyan)!important;box-shadow:0 0 0 3px rgba(88,244,239,.13)!important}
+img{transition:filter .35s ease,transform .45s ease}
+.photo-frame:hover{filter:saturate(1.12);transform:scale(1.008)}
+h1,h2{letter-spacing:-.035em}
+@media(min-width:900px){
+ body{padding-bottom:105px}
+ main,.main-content,.page-content{width:min(1380px,calc(100% - 64px));margin-left:auto;margin-right:auto}
+ .glass{padding:clamp(28px,3vw,46px)}
+ .progress-section,.tools-section,.photo-section{max-width:1320px;margin-bottom:36px;padding-left:28px;padding-right:28px}
+ .tools-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+ .tool-card{padding:24px}
+ .achievement-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+ .time-mission-grid{gap:16px}
+ .bottom-nav{bottom:18px;padding:9px}
+ .bottom-nav a{min-height:50px;font-size:13px}
+}
+@media(min-width:1400px){.progress-section,.tools-section,.photo-section{max-width:1450px}}
+@media(max-width:600px){
+ .glass{border-radius:21px}
+ .bottom-nav{width:calc(100% - 18px);bottom:7px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+
 </style>
 </head>
 <body>

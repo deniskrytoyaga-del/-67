@@ -147,6 +147,8 @@ footer{padding:12px}
 </section>
 <script>
 const $=id=>document.getElementById(id);
+window.addEventListener('error',e=>{const box=document.getElementById('toast');if(box){box.textContent='Ошибка сайта: '+(e.message||'неизвестная ошибка');box.classList.add('show')}});
+window.addEventListener('unhandledrejection',e=>{const box=document.getElementById('toast');if(box){box.textContent='Ошибка сайта: '+(e.reason?.message||e.reason||'ошибка запроса');box.classList.add('show')}});
 $('appsJump').addEventListener('click',()=>$('appsSection').scrollIntoView({behavior:'smooth'}));
 
 
@@ -220,7 +222,8 @@ languageObserver.observe(document.body,{childList:true,subtree:true,characterDat
 let clicks=Number(localStorage.getItem('six7_clicks')||0),coins=Number(localStorage.getItem('six7_coins')||0),end=Number(localStorage.getItem('six7_end')||0),glow=localStorage.getItem('six7_glow')==='1',alarmOn=false;
 let ACCOUNT_API_URL=localStorage.getItem('six7_support_worker')||'https://shy-salad-d33d.deniskrytoyaga.workers.dev',ACCOUNT_TOKEN=localStorage.getItem('six7_account_token')||'',accountSaveTimer=null;
 const skins=[{id:'classic',name:'Классика',price:0,desc:'Оригинальный стиль 67'},{id:'neon',name:'Кибер-неон',price:5,desc:'Яркий цифровой градиент'},{id:'fire',name:'Огненный',price:10,desc:'67 горит ярким пламенем'},{id:'ice',name:'Ледяной',price:15,desc:'Холодное голубое сияние'},{id:'gold',name:'Золотой',price:25,desc:'Золотой статус легенды'},{id:'galaxy',name:'Галактика',price:40,desc:'Космический перелив цветов'}];
-let ownedSkins=JSON.parse(localStorage.getItem('six7_owned_skins')||'["classic"]'),activeSkin=localStorage.getItem('six7_active_skin')||'classic';
+let ownedSkins=(()=>{try{const v=JSON.parse(localStorage.getItem('six7_owned_skins')||'["classic"]');return Array.isArray(v)?v.filter(x=>['classic','neon','fire','ice','gold','galaxy'].includes(x)):['classic']}catch{return ['classic']}})(),activeSkin=localStorage.getItem('six7_active_skin')||'classic';
+if(!['classic','neon','fire','ice','gold','galaxy'].includes(activeSkin))activeSkin='classic';
 const fmt=ms=>{let s=Math.max(0,Math.ceil(ms/1000));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')};
 function toast(t){$('toast').textContent=t;$('toast').classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2600)}
 function update(){ $('coins').textContent=coins;$('clicks').textContent=clicks;if($('skinCoins'))$('skinCoins').textContent=coins;localStorage.setItem('six7_clicks',clicks);localStorage.setItem('six7_coins',coins);renderSkins();if(ACCOUNT_TOKEN)queueAccountSave();}

@@ -71,7 +71,13 @@ export default {
     const exists=await env.DB.prepare("SELECT id FROM users WHERE username_key=?").bind(username.toLowerCase()).first();
     if(exists) return json({error:"Такой логин уже занят."},409,headers);
     const pass=await passwordRecord(password), userId=randomToken(16), token=randomToken();
-    await env.DB.prepare("INSERT INTO users (id,username,username_key,password_salt,password_hash,coins,clicks,owned_skins,active_skin,created_at,updated_at) VALUES (?,?,?,?,?,0,0,?, 'classic', ?, ?)").bind(userId,username,username.toLowerCase(),pass.salt,pass.hash,'["classic"]',Date.now(),Date.now()).run();
+    const coins=Math.max(0,Math.min(100000000,Math.floor(Number(body.coins)||0)));
+    const clicks=Math.max(0,Math.min(1000000000,Math.floor(Number(body.clicks)||0)));
+    const validSkins=new Set(["classic","neon","fire","ice","gold","galaxy"]);
+    const skins=[...new Set((Array.isArray(body.ownedSkins)?body.ownedSkins:[]).filter(x=>validSkins.has(x)))];
+    if(!skins.includes("classic")) skins.unshift("classic");
+    const active=skins.includes(body.activeSkin)?body.activeSkin:"classic";
+    await env.DB.prepare("INSERT INTO users (id,username,username_key,password_salt,password_hash,coins,clicks,owned_skins,active_skin,created_at,updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?)").bind(userId,username,username.toLowerCase(),pass.salt,pass.hash,coins,clicks,JSON.stringify(skins),active,Date.now(),Date.now()).run();
     await env.DB.prepare("INSERT INTO sessions (token_hash,user_id,expires_at) VALUES (?,?,?)").bind(await sha256(token),userId,Date.now()+30*24*60*60*1000).run();
     const user=await env.DB.prepare("SELECT username,coins,clicks,owned_skins,active_skin FROM users WHERE id=?").bind(userId).first();
     return json({token,profile:profile(user)},201,headers);

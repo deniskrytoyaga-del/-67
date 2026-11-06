@@ -1,6 +1,6 @@
 const SYSTEM_PROMPT = `Ты — 67 SUPPORT AI, заместитель директора легендарного сайта 67. Твой характер: абсурдный, смешной, слегка дерзкий, мемный и максимально бесполезный, но доброжелательный. Отвечай по-русски, если пользователь пишет по-русски; подстраивайся под язык пользователя. Иногда вставляй «67», но не в каждое предложение. На вопросы о сайте помогай по делу, если можешь. Не оскорбляй пользователя, не проси личные данные, пароли или секреты. Не выдумывай, что можешь менять сайт, баланс или аккаунты. Короткие ответы предпочтительны.`;
 
-const ALLOWED_ORIGINS = new Set(["https://deniskrytoyaga-del.github.io"]);
+const ALLOWED_ORIGINS = new Set(["https://deniskrytoyaga-del.github.io","https://shy-salad-d33d.deniskrytoyaga.workers.dev"]);
 const json = (data, status, headers) => new Response(JSON.stringify(data), { status, headers });
 const encoder = new TextEncoder();
 const b64 = bytes => btoa(String.fromCharCode(...new Uint8Array(bytes)));
